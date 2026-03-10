@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="sendLocation()" style="padding: 10px 20px; font-size: 16px;">Send My Location</button>
+<p id="statusText">Waiting...</p>
+
+<script>
+function sendLocation(){
+    document.getElementById("statusText").innerText = "Requesting location...";
+    console.log("Requesting location from browser...");
+
+    navigator.geolocation.getCurrentPosition(function(position){
+        let lat = position.coords.latitude;
+        let lon = position.coords.longitude;
+
+        document.getElementById("statusText").innerText = "Sending to AWS...";
+        console.log("Got coordinates! Latitude: " + lat + ", Longitude: " + lon);
+
+        // USING YOUR NEW LAMBDA FUNCTION URL
+        fetch("https://2kdoa4ecec5a5kn7jtpabfbuci0wckhs.lambda-url.us-east-2.on.aws/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                lat: lat,
+                lon: lon
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Success! AWS responded with:", data);
+            document.getElementById("statusText").innerText = "Success! Coordinates sent to CC3200.";
+        })
+        .catch((error) => {
+            console.error("Error sending to AWS:", error);
+            document.getElementById("statusText").innerText = "Error! Check console.";
+        });
+
+    }, function(error) {
+        console.error("Geolocation error:", error.message);
+        document.getElementById("statusText").innerText = "Location access denied or failed.";
+    });
+}
+</script>
+
+</body>
+</html>
