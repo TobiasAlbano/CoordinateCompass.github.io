@@ -1,141 +1,264 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coordinate Compass</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinate Compass Project</title>
 
-<style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #111;
-    color: #eee;
-}
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #f1f1f1;
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Smooth scroll */
+        }
 
-header {
-    background: #1f1f1f;
-    padding: 20px;
-    text-align: center;
-}
+        header {
+            background: linear-gradient(135deg, #4a90e2, #2f2f2f);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
 
-header h1 {
-    margin: 0;
-}
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            letter-spacing: 1px;
+        }
 
-nav {
-    background: #2b2b2b;
-    padding: 10px;
-    text-align: center;
-}
+        header p {
+            margin-top: 10px;
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
 
-nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-}
+        /* Navigation Styles */
+        nav {
+            background: #1e1e1e;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
 
-nav a:hover {
-    color: #4fc3f7;
-}
+        nav a {
+            color: #fff;
+            margin: 0 20px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
 
-.container {
-    max-width: 900px;
-    margin: auto;
-    padding: 30px;
-}
+        nav a:hover {
+            color: #50fa7b;
+        }
 
-.section {
-    margin-bottom: 40px;
-}
+        /* Main Content Layout */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
 
-.card {
-    background: #1a1a1a;
-    padding: 20px;
-    border-radius: 8px;
-}
+        .section {
+            margin-bottom: 80px;
+            padding: 50px 20px;
+        }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #1f1f1f;
-    color: #aaa;
-}
-</style>
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #50fa7b;
+            margin-bottom: 30px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .col {
+            background: #1a1a1a;
+            flex: 1 1 45%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .col:hover {
+            transform: translateY(-10px);
+        }
+
+        .col h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #50fa7b;
+        }
+
+        .col p {
+            font-size: 1.1rem;
+            color: #d1d1d1;
+        }
+
+        /* Footer */
+        footer {
+            background: #2f2f2f;
+            text-align: center;
+            padding: 25px;
+            color: #bbb;
+            font-size: 1rem;
+        }
+
+        footer a {
+            color: #50fa7b;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
 </head>
 
 <body>
 
-<header>
-<h1>Coordinate Compass</h1>
-<p>EEC 172 Final Project</p>
-</header>
+    <!-- Header Section -->
+    <header>
+        <h1>Coordinate Compass</h1>
+        <p>Streamlining Navigation with Precision</p>
+    </header>
 
-<nav>
-<a href="#overview">Overview</a>
-<a href="#problem">Problem</a>
-<a href="#solution">Solution</a>
-<a href="#results">Results</a>
-<a href="#team">Team</a>
-</nav>
+    <!-- Navigation -->
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="#problem">Problem</a>
+        <a href="#solution">Solution</a>
+        <a href="#results">Results</a>
+        <a href="#team">Team</a>
+    </nav>
 
-<div class="container">
+    <div class="container">
 
-<div id="overview" class="section">
-<div class="card">
-<h2>Project Overview</h2>
-<p>
-This project involves making a set of programs that will allow us to type 
-  coordinates and have the board display a compass that points from our 
-  current location to the target location.
-</p>
-</div>
-</div>
+        <!-- Overview Section -->
+        <div id="overview" class="section">
+            <h2 class="section-title">Project Overview</h2>
+            <div class="row">
+                <div class="col">
+                    <h3>What is Coordinate Compass?</h3>
+                    <p>
+                        The Coordinate Compass is an innovative tool designed to simplify navigation. Users can
+                        input coordinates, and the compass will point directly from their current location to the
+                        target location, offering a streamlined, distraction-free navigation experience.
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>How It Works</h3>
+                    <p>
+                        By entering GPS coordinates, the compass shows an immediate bearing towards the target. No
+                        more zooming in and out of complicated maps—just a direct line of navigation.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<div id="problem" class="section">
-<div class="card">
-<h2>Problem</h2>
-<p>
-Maps are slow and overcomplicated, need a compass that points directly to where
-  we want to go.
-</p>
-</div>
-</div>
+        <!-- Problem Section -->
+        <div id="problem" class="section">
+            <h2 class="section-title">The Problem</h2>
+            <div class="row">
+                <div class="col">
+                    <h3>Traditional Navigation</h3>
+                    <p>
+                        Maps can be slow and cumbersome, often requiring constant zooming and panning to figure out
+                        directions. Navigation apps can be overwhelming with too many features and layers of
+                        information.
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>The Need for Simplicity</h3>
+                    <p>
+                        We needed a solution that was straightforward and efficient, one that provided the exact
+                        direction without any unnecessary complexity.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<div id="solution" class="section">
-<div class="card">
-<h2>Proposed Solution</h2>
-<p>
-We introduce a simple system that points directly from point A to point B.
-</p>
-</div>
-</div>
+        <!-- Solution Section -->
+        <div id="solution" class="section">
+            <h2 class="section-title">Our Solution</h2>
+            <div class="row">
+                <div class="col">
+                    <h3>Direct Compass Navigation</h3>
+                    <p>
+                        The Coordinate Compass eliminates the need for detailed maps. Users can simply enter their
+                        current coordinates and target location, and the compass points them directly towards the
+                        target.
+                    </p>
+                </div>
+                <div class="col">
+                    <h3>Simplified User Experience</h3>
+                    <p>
+                        This system is designed to be intuitive. The interface is minimalistic, allowing users to
+                        focus solely on their navigation with no distractions.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<div id="results" class="section">
-<div class="card">
-<h2>Results</h2>
-<ul>
-<li>WIP</li>
-</ul>
-</div>
-</div>
+        <!-- Results Section -->
+        <div id="results" class="section">
+            <h2 class="section-title">Results</h2>
+            <div class="row">
+                <div class="col">
+                    <h3>Key Outcomes</h3>
+                    <ul>
+                        <li>Real-time directional updates</li>
+                        <li>Precise compass heading</li>
+                        <li>Minimalistic interface</li>
+                        <li>Mobile-ready version in development</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h3>What's Next?</h3>
+                    <p>
+                        We're continuously improving the system, with plans to enhance mobile compatibility and
+                        integrate real-time location tracking for an even better user experience.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-<div id="team" class="section">
-<div class="card">
-<h2>Team</h2>
-<p>Sukhraj Johal</p>
-<p>Tobias Albano</p>
-</div>
-</div>
+        <!-- Team Section -->
+        <div id="team" class="section">
+            <h2 class="section-title">Meet the Team</h2>
+            <div class="row">
+                <div class="col">
+                    <h3>Sukhraj Johal</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="col">
+                    <h3>Tobias Albano</h3>
+                    <p>UX/UI Designer & Developer</p>
+                </div>
+            </div>
+        </div>
 
-</div>
+    </div>
 
-<footer>
-<p>© 2026 Coordinate Compass Project</p>
-</footer>
+    <footer>
+        <p>© 2026 Coordinate Compass Project. All rights reserved. | <a href="https://github.com/coordinate-compass">View on GitHub</a></p>
+    </footer>
 
 </body>
+
 </html>
-
-
