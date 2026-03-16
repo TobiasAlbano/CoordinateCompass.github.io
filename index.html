@@ -28,7 +28,6 @@ margin:auto;
 }
     
 /* ############################ Header ############################ */
-
 header{
 background:linear-gradient(135deg,#2563eb,#1e293b);
 text-align:center;
@@ -43,7 +42,6 @@ opacity:.9;
 }
 
 /* ############################ Navigation Heading ############################ */
-
 nav{
 background:#020617;
 padding:15px;
@@ -64,7 +62,6 @@ color:#38bdf8;
 }
 
 /* ############################ Layout ############################ */
-
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
@@ -78,14 +75,12 @@ border-radius:10px;
 }
 
 /* ############################ Images ############################ */
-
 img{
-width:100%;
+width:50%;
 border-radius:10px;
 }
 
 /* ############################ Video ############################ */
-
 .video{
 display:flex;
 justify-content:center;
@@ -96,7 +91,6 @@ border-radius:10px;
 }
 
 /* ############################ Footer ############################ */
-
 footer{
 text-align:center;
 padding:30px;
@@ -109,24 +103,24 @@ font-size:0.9rem;
 
 <body>
 
-<!-- ############################ -->
+<!-- ############################ Header ############################ -->
 <header>
 <h1>Smart Campus Navigator</h1>
 <p>An IoT Wayfinding Device for UC Davis</p>
 </header>
 
-<!-- ############################ -->
+<!-- ############################ Navigation ############################ -->
 <nav>
 <a href="#overview">Overview</a>
 <a href="#architecture">Architecture</a>
 <a href="#hardware">Hardware</a>
+<a href="#bom">Materials</a>
 <a href="#demo">Video Demo</a>
 <a href="#results">Results</a>
 <a href="#team">Team</a>
 </nav>
 
 <!-- ############################ Overview ############################ -->
-<!-- Overview -->
 <section id="overview">
 <div class="container">
 
@@ -144,8 +138,6 @@ programming, and sensor fusion to determine the user's orientation and display
 a compass-style navigation interface on an OLED display.
 </p>
 <div class="grid">
-
-<!-- ############################ Overview -- Features ############################ -->
 <div class="card">
 <h3>Key Features</h3>
 <ul>
@@ -172,8 +164,6 @@ a compass-style navigation interface on an OLED display.
 </section>
 
 <!-- ############################ Architecture ############################ -->
-<!-- Architecture -->
-
 <section id="architecture">
 <div class="container">
 
@@ -184,28 +174,31 @@ cloud backend, and embedded device.
 </p>
 
 <div class="grid">
-
-<!-- ############################ Architecture - Cards ############################ -->
 <div class="card">
 <h3>Mobile Frontend</h3>
 <p>
 A web application running on the user's smartphone retrieves the device's
-GPS coordinates and sends them to an AWS endpoint every five seconds.
+GPS coordinates and sends them to an AWS endpoint every five seconds. The
+web application is built using HTML and JavaScript to send the latitude
+and longitude in JSON format to be directly updated in the shadow.
 </p>
 </div>
 <div class="card">
 <h3>Cloud Backend</h3>
 <p>
 AWS Lambda processes the coordinates and updates the AWS IoT Device Shadow,
-allowing the embedded device to retrieve the data.
+allowing the embedded device to retrieve the data. The Lambda function is
+designed with Python to behave like an interrupt; it updates the shadow
+every time a change is detected in the endpoint.
 </p>
 </div>
 <div class="card">
 <h3>Embedded System</h3>
 <p>
-The CC3200 microcontroller retrieves coordinates, reads heading data from
-the BNO055 sensor, and calculates the distance and bearing to the target.
-The direction is displayed on the OLED compass interface.
+The CC3200 microcontroller retrieves coordinates from AWS via Wi-Fi, reads 
+heading data from the BNO055 magnetometer sensor over I2C, and calculates 
+the distance and bearing to the target. The direction is displayed on the 
+OLED compass interface via SPI.
 </p>
 </div>
 </div>
@@ -215,8 +208,6 @@ The direction is displayed on the OLED compass interface.
 </section>
 
 <!-- ############################ Hardware ############################ -->
-<!-- Hardware -->
-
 <section id="hardware">
 <div class="container">
 
@@ -226,23 +217,33 @@ The prototype integrates multiple embedded peripherals connected to the
 CC3200 LaunchPad development board.
 </p>
 <div class="grid">
-
-<!-- ############################ Hardware - Cards ############################ -->
 <div class="card">
 <h3>CC3200 LaunchPad</h3>
-<p>Main microcontroller handling Wi-Fi communication and system control.</p>
+<p>Main microcontroller handling Wi-Fi communication and system control.
+It allowed us to implement the state machine described below. In addition, 
+it includes a UART system that allowed us to send/receive JSON packages 
+to/from AWS to monitor our shadow, specifically the user's coordinates.</p>
 </div>
 <div class="card">
 <h3>BNO055 IMU</h3>
-<p>Provides orientation data used to determine the user's heading.</p>
+<p>Provides orientation data used to determine the user's heading. Using I2C, 
+we can wait for the calibration mask to fill up before entering program 
+execution, then read using the magnetometer's mask.</p>
 </div>
 <div class="card">
 <h3>OLED Display</h3>
-<p>SPI-driven display used to render compass graphics and distance data.</p>
+<p>SPI-driven display used to render compass graphics and distance data. We
+used a given library of functions that allowed us to draw circles, lines, and 
+text.</p>
 </div>
 <div class="card">
 <h3>IR Receiver</h3>
-<p>Allows the user to navigate the menu using a handheld IR remote.</p>
+<p>Allows the user to navigate the menu using a handheld IR remote. 
+The IR Receiver is wired into a GPIO pin on the CC3200. The software includes
+a GPIO interrupt that measures the time between falling edges on the IR
+Receiver. Since the remote signal encoding is always a single 0 followed by
+some number of 1s, we can divide the time past by the bit-sending frequency
+of the remote to decode the signal.</p>
 </div>
 </div>
 
@@ -252,39 +253,103 @@ CC3200 LaunchPad development board.
 </div>
 </section>
 
-<!-- ############################ Video ############################ -->
-<!-- Demo -->
+<!-- ############################ Bill of Materials ############################ -->
+<section id="bom">
+<div class="container">
 
+<h2>Bill of Materials</h2>
+<p>
+The following components were used to build the Smart Campus Navigator
+prototype. Many parts were provided through the EEC172 lab, while others
+were inexpensive sensors and wiring used to assemble the breadboard prototype.
+</p>
+
+<div class="grid">
+<div class="card">
+<h3>CC3200 LaunchPad</h3>
+<p>
+The TI CC3200 LaunchPad acts as the main microcontroller and Wi-Fi
+networking platform for the system.
+</p>
+<p><b>Cost:</b> Provided by lab</p>
+</div>
+
+<div class="card">
+<h3>BNO055 IMU Sensor</h3>
+<p>
+A 9-DOF inertial measurement unit used to determine the user’s
+orientation and heading for the compass navigation system.
+</p>
+<p><b>Cost:</b> ~$35</p>
+</div>
+
+<div class="card">
+<h3>SSD1351 OLED Display</h3>
+<p>
+SPI-based OLED display used to render the compass interface and
+navigation information.
+</p>
+<p><b>Cost:</b> Provided by lab</p>
+</div>
+
+<div class="card">
+<h3>IR Receiver Module</h3>
+<p>
+Infrared receiver used to decode signals from a handheld remote
+for navigating the device menu.
+</p>
+<p><b>Cost:</b> Provided by lab</p>
+</div>
+
+<div class="card">
+<h3>IR Remote Control</h3>
+<p>
+Used by the user to select destinations and interact with the
+menu system displayed on the OLED.
+</p>
+<p><b>Cost:</b> Provided by lab</p>
+</div>
+
+<div class="card">
+<h3>Jumper Wires / Breadboard</h3>
+<p>
+Used to connect the CC3200 board to the sensor modules and display
+during prototyping.
+</p>
+<p><b>Cost:</b> ~$5</p>
+</div>
+</div>
+
+<br>
+<p><b>Total Estimated Cost: ~$40</b></p>
+
+</div>
+</section>
+
+<!-- ############################ Video ############################ -->
 <section id="demo">
 <div class="container">
 
 <h2>Video Demonstration</h2>
-
 <p>
 The following video demonstrates the system initialization, menu navigation,
 and real-time directional guidance provided by the Smart Campus Navigator.
 </p>
 
 <div class="video">
-
 <iframe width="720" height="405"
-src="https://www.youtube.com/watch?v=Ar45VXTDtL0"
+src="https://www.youtube.com/embed/Ar45VXTDtL0"
 allowfullscreen></iframe>
-
 </div>
 </div>
 </section>
 
 <!-- ############################ Results ############################ -->
-<!-- Results -->
-
 <section id="results">
 <div class="container">
 <h2>Results</h2>
 
 <div class="grid">
-
-<!-- ############################ Results Cards ############################ -->
 <div class="card">
 <h3>Accurate Navigation</h3>
 <p>
@@ -310,12 +375,9 @@ compass animation during navigation.
 </div>
 </section>
 
-<!-- ############################ Us :D ############################ -->
-<!-- Team -->
-
+<!-- ############################ Team ############################ -->
 <section id="team">
 <div class="container">
-
 <h2>Team</h2>
 <div class="grid">
 <div class="card">
@@ -327,15 +389,12 @@ compass animation during navigation.
 <p>Frontend web app, navigation mathematics, IR signal decoding.</p>
 </div>
 </div>
-
 </div>
 </section>
 
-<!-- ############################ Foot ############################ -->
+<!-- ############################ Footer ############################ -->
 <footer>
-
 <p>Smart Campus Navigator — EEC 172 Final Project (2026)</p>
-
 </footer>
 
 </body>
