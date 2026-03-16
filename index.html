@@ -255,6 +255,56 @@ of the remote to decode the signal.</p>
 <br>
 <img src="prototype.png" alt="Hardware Prototype">
 
+<div class="card">
+<h3>1: Initialzation</h3>
+<p>After powering on the device, we wait for the CC3200 to first validate hardware
+by ensuring it can read the I2C buffer from the BNO055 and initialze the OLED screen
+using the provided initialzation function. After displaying a "Hardware Verified"
+message, it will attempt to connect to AWS and successfully GET from the shadow,
+displaying a "Successfully Connected" message after. After intialization, the CC3200
+reads from the calibration mask of the BNO055, telling the user to "make figure 8s"
+until it reads a successfull calibration (decimal 3).</p>
+</div>
+
+<div class="card">
+<h3>2: Location Select</h3>
+<p>Following successful calibration, the OLED will display the location select
+menu, prompting the user to pick from a list of displayed location names with
+corresponding numbers. The nubmers indicate which number of the remote to press
+to choose that location. Once they exit this screen, it can be returned to by
+pressing the ENTER key on the remote. The user also has the option to only have
+the compass display magnetic North, by pressing delete whilst in the selection
+menu.</p>
+</div>
+
+<div class="card">
+<h3>3: Coordinates</h3>
+<p>The CC3200 then runs a GET function, placing a JSON package from the shadow
+into the UART buffer, allowing us to read the lattitude and longitude into 
+variables. Once we have these, we can use trigonometry to determine which angle
+the user needs to walk to reach the destination they selected.</p>
+</div>
+
+<div class="card">
+<h3>4: Display</h3>
+<p>Once we have determined the location, current position, distance, and target
+angle for a given instance, we can use more basic trigonometry to determine the
+arguments for the draw line function, which takes two sets of (x,y) coordinates
+as inputs. In addition, we can display true north as a reference. We have also
+decided to display the current and target locations, as well as the distance to
+and name of a target location.</p>
+</div>
+
+<div class="card">
+<h3>...</h3>
+<p>Every five seconds, the compass will update the current coordinates to be
+what the shadow has updated to. This process of getting new coordinates, 
+performing mathematical operations, and displaying the updated information
+will be repeated indefinitely until either the device is powered off, the 
+device malfunctions, or there is a user interrupt. A user interrupt is triggered
+by the user pressing the ENTER key to return to the location selection menu.</p>
+</div>
+
 </div>
 </section>
 
